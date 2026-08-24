@@ -100,18 +100,24 @@ export function ContactSection() {
             {/* Direct Channel Links */}
             <div className="mt-10 border-t border-white/[.08] pt-6 flex flex-wrap items-center gap-6">
               <a
-                href="https://wa.me/919999999999"
+                href="https://wa.me/918250967250?text=Hi%20Creovates%20Studio%2C%20I%20have%20a%20project%20enquiry"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="focus-ring inline-flex items-center gap-1 text-xs font-bold uppercase tracking-[0.14em] text-[#8e949d] hover:text-[#f4f4f2] transition-colors"
+                className="focus-ring inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-[#8e949d] hover:text-[#f4f4f2] transition-colors"
               >
                 WhatsApp <ArrowUpRight size={13} />
               </a>
               <a
-                href="mailto:contact@creovates.com"
-                className="focus-ring inline-flex items-center gap-1 text-xs font-bold uppercase tracking-[0.14em] text-[#8e949d] hover:text-[#f4f4f2] transition-colors"
+                href="mailto:mindverse2000@gmail.com?subject=New%20Project%20Enquiry%20-%20Creovates"
+                className="focus-ring inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-[#8e949d] hover:text-[#f4f4f2] transition-colors"
               >
                 Email studio <ArrowUpRight size={13} />
+              </a>
+              <a
+                href="tel:+918250967250"
+                className="focus-ring inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.14em] text-[#8e949d] hover:text-[#f4f4f2] transition-colors"
+              >
+                +91 82509 67250 <ArrowUpRight size={13} />
               </a>
             </div>
 
