@@ -1,0 +1,7 @@
+"use client";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { BrandMark } from "./brand-mark";
+import { Button } from "./button";
+const links=[{href:"/work",label:"Work"},{href:"/#services",label:"Services"},{href:"/#process",label:"Process"},{href:"/#about",label:"About"},{href:"/contact",label:"Contact"}];
+export function SiteHeader(){const [scrolled,setScrolled]=useState(false);useEffect(()=>{const update=()=>setScrolled(window.scrollY>20);update();window.addEventListener("scroll",update,{passive:true});return()=>window.removeEventListener("scroll",update);},[]);return <header className={`fixed inset-x-0 top-0 z-30 border-b transition-colors duration-500 ${scrolled?"border-white/[.08] bg-[#08090b]/95":"border-transparent bg-transparent"}`}><div className="mx-auto flex h-[84px] max-w-[1600px] items-center justify-between px-5 md:h-[92px] md:px-9"><BrandMark/><nav aria-label="Primary navigation" className="hidden items-center gap-7 lg:flex">{links.map(link=><Link key={link.href} className="focus-ring text-[11px] font-semibold uppercase tracking-[.095em] text-[#8e949d] transition hover:text-[#f4f4f2]" href={link.href}>{link.label}</Link>)}</nav><div className="hidden md:block"><Button href="/contact" className="!px-5 !py-2.5">Start a project</Button></div><Link href="/contact" className="focus-ring text-[11px] font-semibold uppercase tracking-[.1em] md:hidden">Menu <span className="text-[#4b83ee]">+</span></Link></div></header>;}

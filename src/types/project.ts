@@ -1,0 +1,1 @@
+export type Project = { id:string; title:string; slug:string; client:string | null; category:string; description:string; challenge:string | null; solution:string | null; services:string[]; year:number | null; cover_image:string | null; gallery:string[]; live_url:string | null; featured:boolean; published:boolean; display_order:number; created_at:string; };

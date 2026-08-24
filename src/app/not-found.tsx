@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function NotFound(){return <main className="grid min-h-screen place-items-center px-5 text-center"><div><p className="eyebrow justify-center">404</p><h1 className="mt-6 text-5xl tracking-[-.07em] md:text-8xl">OUT OF FRAME.</h1><Link className="focus-ring mt-8 inline-block text-[11px] font-bold uppercase tracking-[.14em] text-[#4b83ee]" href="/">Back to Creovates ↗</Link></div></main>}
