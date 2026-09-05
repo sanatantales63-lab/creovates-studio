@@ -1,6 +1,10 @@
-import Link from "next/link";
-import { getPublishedProjects } from "@/lib/projects";
-import { requireAdmin } from "@/lib/admin";
+﻿import { requireAdmin } from "@/lib/admin";
+import { ProjectTable } from "@/components/admin/project-table";
 
-export const runtime = "edge";
-export default async function AdminProjects(){await requireAdmin();const projects=await getPublishedProjects();return <main className="min-h-screen px-5 py-8 md:px-9"><header className="flex items-center justify-between border-b border-white/[.08] pb-6"><Link href="/admin" className="text-[10px] font-bold uppercase tracking-[.14em] text-[#8e949d]">← Admin</Link><Link href="/admin/projects/new" className="rounded-full bg-[#f4f4f2] px-4 py-2 text-[10px] font-bold uppercase tracking-[.12em] text-[#08090b]">Add project ↗</Link></header><section className="mx-auto max-w-[1300px] py-16"><p className="eyebrow">Project manager</p><h1 className="mt-5 text-5xl tracking-[-.07em]">PROJECTS</h1><div className="mt-14 border-t border-white/[.08]">{projects.length?projects.map(project=><Link key={project.id} href={`/admin/projects/${project.id}`} className="focus-ring grid grid-cols-[1fr_auto] border-b border-white/[.08] py-5 transition hover:bg-white/[.03]"><div><p className="text-xl tracking-[-.04em]">{project.title}</p><p className="mt-1 text-xs text-[#8e949d]">{project.category} · {project.published?"Published":"Draft"}</p></div><span className="text-[10px] font-bold uppercase tracking-[.12em] text-[#4b83ee]">Edit ↗</span></Link>):<p className="py-10 text-sm text-[#8e949d]">No published projects found. Connect Supabase to manage the project archive.</p>}</div></section></main>}
+export const dynamic = "force-dynamic";
+
+export default async function AdminProjectsPage() {
+  await requireAdmin();
+
+  return <ProjectTable />;
+}

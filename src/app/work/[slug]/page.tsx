@@ -1,13 +1,178 @@
-import { Metadata } from "next";
+﻿import { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/button";
 import { getProject } from "@/lib/projects";
+import { ArrowLeft } from "lucide-react";
 
 export const runtime = "edge";
-export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{const project=await getProject((await params).slug); return {title:project?.title || "Project",description:project?.description};}
-export default async function ProjectPage({params}:{params:Promise<{slug:string}>}){const project=await getProject((await params).slug);if(!project)notFound();return <main><SiteHeader/><section className="px-5 pb-16 pt-40 md:px-9 md:pb-24 md:pt-52"><div className="mx-auto max-w-[1600px]"><p className="eyebrow">{project.category}{project.year ? ` / ${project.year}` : ""}</p><h1 className="mt-8 max-w-6xl text-[clamp(4rem,10vw,10rem)] font-medium leading-[.8] tracking-[-.09em]">{project.title}</h1><div className="mt-14 grid gap-8 border-t border-white/[.08] pt-5 md:grid-cols-12"><p className="text-lg leading-7 text-[#8e949d] md:col-span-5">{project.description}</p><dl className="grid grid-cols-2 gap-6 md:col-span-4 md:col-start-9"><Meta label="Client" value={project.client || "—"}/><Meta label="Services" value={project.services.join(", ")}/></dl></div></div></section><section className="px-5 md:px-9"><div className="relative mx-auto max-w-[1600px] overflow-hidden bg-[#101216]"><div className="relative aspect-[16/9]">{project.cover_image ? <Image src={project.cover_image} alt={`${project.title} website preview`} fill priority className="object-cover" sizes="100vw"/>:<div className="orbital-visual h-full"><i className="orbital-line"/><i className="orbital-line"/><i className="orbital-panel"/></div>}</div></div></section><section className="px-5 py-24 md:px-9 md:py-36"><div className="mx-auto grid max-w-[1600px] gap-14 md:grid-cols-12"><p className="eyebrow md:col-span-3">The story</p><div className="space-y-16 md:col-span-7"><Story title="The challenge" body={project.challenge}/><Story title="The approach" body="A tailored digital system that gives every interaction a clear role in the brand experience."/><Story title="The solution" body={project.solution}/>{project.live_url&&<Button href={project.live_url} target="_blank">Visit live project</Button>}</div></div></section>{project.gallery.length>0&&<section className="px-5 pb-24 md:px-9 md:pb-36"><div className="mx-auto grid max-w-[1600px] gap-5 md:grid-cols-2">{project.gallery.map((source,index)=><div key={source} className={`relative overflow-hidden bg-[#101216] ${index===0?"md:col-span-2":""}`}><div className={index===0?"aspect-[16/9]":"aspect-[4/3]"}><Image src={source} alt={`${project.title} detail ${index+1}`} fill className="object-cover" sizes="(min-width:768px) 50vw,100vw"/></div></div>)}</div></section>}<section className="border-t border-white/[.08] px-5 py-20 md:px-9"><div className="mx-auto flex max-w-[1600px] flex-col justify-between gap-8 md:flex-row md:items-center"><h2 className="text-4xl tracking-[-.06em] md:text-6xl">A project in mind?</h2><Button href="/contact">Start the conversation</Button></div></section><SiteFooter/></main>}
-function Meta({label,value}:{label:string;value:string}){return <div><dt className="text-[10px] font-bold uppercase tracking-[.12em] text-[#4b83ee]">{label}</dt><dd className="mt-2 text-sm leading-5 text-[#8e949d]">{value}</dd></div>}
-function Story({title,body}:{title:string;body:string|null}){if(!body)return null;return <div><h2 className="text-[10px] font-bold uppercase tracking-[.14em] text-[#4b83ee]">{title}</h2><p className="mt-4 max-w-2xl text-2xl leading-8 tracking-[-.04em] text-[#8e949d]">{body}</p></div>}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const project = await getProject((await params).slug);
+  return {
+    title: project?.title || "Project",
+    description: project?.description,
+  };
+}
+
+export default async function ProjectPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const project = await getProject((await params).slug);
+  if (!project) notFound();
+
+  return (
+    <main>
+      <SiteHeader />
+      <section className="px-5 pb-16 pt-36 md:px-9 md:pb-24 md:pt-44">
+        <div className="mx-auto max-w-[1600px]">
+          {/* Back button */}
+          <div className="mb-8">
+            <Link
+              href="/#work"
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.14em] text-[#8e949d] transition-colors hover:text-[#f4f4f2]"
+            >
+              <ArrowLeft size={14} />
+              <span>Back to Selected Work</span>
+            </Link>
+          </div>
+
+          <p className="eyebrow">
+            {project.category}
+            {project.year ? ` / ${project.year}` : ""}
+          </p>
+          <h1 className="mt-8 max-w-6xl text-[clamp(4rem,10vw,10rem)] font-medium leading-[.8] tracking-[-.09em]">
+            {project.title}
+          </h1>
+          <div className="mt-14 grid gap-8 border-t border-white/[.08] pt-5 md:grid-cols-12">
+            <p className="text-lg leading-7 text-[#8e949d] md:col-span-5">
+              {project.description}
+            </p>
+            <dl className="grid grid-cols-2 gap-6 md:col-span-4 md:col-start-9">
+              <Meta label="Client" value={project.client || "—"} />
+              <Meta label="Services" value={project.services.join(", ")} />
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      {/* Main Cover Showcase */}
+      <section className="px-5 md:px-9">
+        <div className="relative mx-auto max-w-[1600px] overflow-hidden rounded-md border border-white/[.08] bg-[#101216]">
+          <div className="relative aspect-[16/9] max-h-[750px]">
+            {project.cover_image ? (
+              <Image
+                src={project.cover_image}
+                alt={`${project.title} website preview`}
+                fill
+                priority
+                unoptimized
+                className="object-cover object-top"
+                sizes="100vw"
+              />
+            ) : (
+              <div className="orbital-visual h-full">
+                <i className="orbital-line" />
+                <i className="orbital-line" />
+                <i className="orbital-panel" />
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* The Story Section */}
+      <section className="px-5 py-24 md:px-9 md:py-36">
+        <div className="mx-auto grid max-w-[1600px] gap-14 md:grid-cols-12">
+          <p className="eyebrow md:col-span-3">The story</p>
+          <div className="space-y-16 md:col-span-7">
+            <Story title="The challenge" body={project.challenge} />
+            <Story
+              title="The approach"
+              body="A tailored digital system that gives every interaction a clear role in the brand experience."
+            />
+            <Story title="The solution" body={project.solution} />
+            {project.live_url && (
+              <Button href={project.live_url} target="_blank">
+                Visit live project
+              </Button>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery */}
+      {project.gallery.length > 0 && (
+        <section className="px-5 pb-24 md:px-9 md:pb-36">
+          <div className="mx-auto grid max-w-[1600px] gap-5 md:grid-cols-2">
+            {project.gallery.map((source, index) => (
+              <div
+                key={source}
+                className={`relative overflow-hidden bg-[#101216] ${
+                  index === 0 ? "md:col-span-2" : ""
+                }`}
+              >
+                <div className={index === 0 ? "aspect-[16/9]" : "aspect-[4/3]"}>
+                  <Image
+                    src={source}
+                    alt={`${project.title} detail ${index + 1}`}
+                    fill
+                    unoptimized
+                    className="object-cover"
+                    sizes="(min-width:768px) 50vw,100vw"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Footer CTA */}
+      <section className="border-t border-white/[.08] px-5 py-20 md:px-9">
+        <div className="mx-auto flex max-w-[1600px] flex-col justify-between gap-8 md:flex-row md:items-center">
+          <h2 className="text-4xl tracking-[-.06em] md:text-6xl">
+            A project in mind?
+          </h2>
+          <Button href="/contact">Start the conversation</Button>
+        </div>
+      </section>
+
+      <SiteFooter />
+    </main>
+  );
+}
+
+function Meta({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <dt className="text-[10px] font-bold uppercase tracking-[.12em] text-[#4b83ee]">
+        {label}
+      </dt>
+      <dd className="mt-2 text-sm leading-5 text-[#8e949d]">{value}</dd>
+    </div>
+  );
+}
+
+function Story({ title, body }: { title: string; body: string | null }) {
+  if (!body) return null;
+  return (
+    <div>
+      <h2 className="text-[10px] font-bold uppercase tracking-[.14em] text-[#4b83ee]">
+        {title}
+      </h2>
+      <p className="mt-4 max-w-2xl text-2xl leading-8 tracking-[-.04em] text-[#8e949d]">
+        {body}
+      </p>
+    </div>
+  );
+}

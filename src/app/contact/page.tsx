@@ -1,8 +1,9 @@
 import { Metadata } from "next";
+import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ContactSection } from "@/components/contact-section";
-import { ArrowUpRight, Mail, Phone, MessageSquare } from "lucide-react";
+import { ArrowUpRight, Mail, Phone, MessageSquare, ArrowLeft } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Contact & Start a Project",
@@ -49,6 +50,15 @@ export default function ContactPage() {
       {/* Hero Header */}
       <section className="site-grid px-5 pb-16 pt-40 md:px-9 md:pt-52 border-b border-white/[.08]">
         <div className="mx-auto max-w-[1600px] w-full">
+          <div className="mb-8">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.14em] text-[#8e949d] transition-colors hover:text-[#f4f4f2]"
+            >
+              <ArrowLeft size={14} />
+              <span>Back to Home</span>
+            </Link>
+          </div>
           <p className="eyebrow">07 — Contact & Enquiries</p>
           <div className="mt-8 grid gap-12 lg:grid-cols-12 items-end">
             <div className="lg:col-span-8">

@@ -280,10 +280,203 @@ h3.font-medium { font-weight:600; }
 }
 
 
+/* ── portfolio dual-view: laptop chrome ──────────────────── */
+.laptop-chrome {
+  background: #0d0f12;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 6px 6px 4px 4px;
+  overflow: hidden;
+  box-shadow: 0 4px 40px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.04);
+}
+.laptop-chrome-bar {
+  height: 28px;
+  background: #13171e;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  flex-shrink: 0;
+}
+.laptop-chrome-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.09);
+}
+.laptop-chrome-urlbar {
+  height: 4px;
+  flex: 1;
+  max-width: 120px;
+  background: rgba(255,255,255,.06);
+  border-radius: 2px;
+  margin-left: 10px;
+}
 
 
+/* ── portfolio dual-view: phone frame ───────────────────── */
 
+/*
+  Phone is positioned absolute relative to the outer .dual-view-wrap div.
+  It overlaps the bottom-right INSIDE the laptop frame — no negative margins,
+  so main overflow-hidden cannot clip it.
+  The outer wrapper gets padding-bottom + padding-right on desktop to reserve space.
+*/
 
+.dual-view-wrap {
+  position: relative;
+}
 
+/* Desktop: reserve room on right + bottom for phone to peek out */
+@media (min-width: 1024px) {
+  .dual-view-wrap { padding-right: 88px; padding-bottom: 36px; }
+  .dual-view-wrap--lg { padding-right: 110px; padding-bottom: 48px; }
+  .dual-view-wrap--sm { padding-right: 70px; padding-bottom: 28px; }
+}
 
+.phone-frame-wrap {
+  position: absolute;
+  /* hidden on small/medium screens */
+  display: none;
+  z-index: 10;
+}
 
+@media (min-width: 1024px) {
+  .phone-frame-wrap {
+    display: block;
+    /* default: md phone — sits bottom-right, partly overlapping laptop */
+    bottom: 0px;
+    right: 0px;
+  }
+  .phone-frame-wrap--lg {
+    bottom: 0px;
+    right: 0px;
+  }
+  .phone-frame-wrap--sm {
+    bottom: 0px;
+    right: 0px;
+  }
+}
+
+/* BASE phone (md) — exact 9:16 aspect ratio (135x240) */
+.phone-frame {
+  width: 135px;
+  height: 240px;
+  border-radius: 22px;
+  border: 2px solid rgba(255,255,255,.22);
+  background: #090b0e;
+  box-shadow:
+    0 16px 64px rgba(0,0,0,.85),
+    0 4px 24px rgba(0,0,0,.6),
+    0 0 0 1px rgba(255,255,255,.07),
+    inset 0 0 0 1px rgba(255,255,255,.05);
+  position: relative;
+  overflow: hidden;
+}
+
+/* side buttons — right side (power) */
+.phone-frame::before {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: 50px;
+  width: 3px;
+  height: 26px;
+  background: rgba(255,255,255,.18);
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 34px 0 rgba(255,255,255,.18);
+}
+/* left side (volume) */
+.phone-frame::after {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: 60px;
+  width: 3px;
+  height: 16px;
+  background: rgba(255,255,255,.18);
+  border-radius: 2px 0 0 2px;
+  box-shadow: 0 24px 0 rgba(255,255,255,.18);
+}
+
+/* dynamic island / notch pill */
+.phone-notch {
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 7px;
+  background: #090b0e;
+  border-radius: 4px;
+  z-index: 4;
+  border: 1px solid rgba(255,255,255,.13);
+}
+
+/* screen */
+.phone-screen {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* home indicator */
+.phone-indicator {
+  position: absolute;
+  bottom: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 34px;
+  height: 4px;
+  background: rgba(255,255,255,.3);
+  border-radius: 2px;
+  z-index: 5;
+}
+
+/* ── LARGE phone (featured card) — exact 9:16 aspect ratio (169x300) ── */
+.phone-frame-wrap--lg .phone-frame {
+  width: 169px;
+  height: 300px;
+  border-radius: 26px;
+}
+.phone-frame-wrap--lg .phone-frame::before {
+  top: 65px; height: 32px; box-shadow: 0 42px 0 rgba(255,255,255,.18);
+}
+.phone-frame-wrap--lg .phone-frame::after {
+  top: 78px; height: 20px; box-shadow: 0 28px 0 rgba(255,255,255,.18);
+}
+.phone-frame-wrap--lg .phone-notch {
+  width: 44px; height: 9px; border-radius: 5px; top: 11px;
+}
+.phone-frame-wrap--lg .phone-screen { border-radius: 24px; }
+.phone-frame-wrap--lg .phone-indicator { width: 42px; height: 4px; bottom: 8px; }
+
+/* ── SMALL phone (compact grid cards) — exact 9:16 aspect ratio (108x192) ── */
+.phone-frame-wrap--sm .phone-frame {
+  width: 108px;
+  height: 192px;
+  border-radius: 18px;
+}
+.phone-frame-wrap--sm .phone-frame::before {
+  top: 42px; height: 20px; box-shadow: 0 26px 0 rgba(255,255,255,.18);
+}
+.phone-frame-wrap--sm .phone-frame::after {
+  top: 50px; height: 12px; box-shadow: 0 18px 0 rgba(255,255,255,.18);
+}
+.phone-frame-wrap--sm .phone-notch {
+  width: 28px; height: 6px; top: 7px;
+}
+.phone-frame-wrap--sm .phone-screen { border-radius: 16px; }
+.phone-frame-wrap--sm .phone-indicator { width: 26px; height: 3px; bottom: 6px; }
+
+/* disable hover scale on phone screen images */
+.phone-screen img { transition: none !important; transform: none !important; }
+/* Button text contrast guarantees */
+a.bg-\[\#f4f4f2\], button.bg-\[\#f4f4f2\],
+a.bg-white, button.bg-white {
+  color: #08090b !important;
+}
+a.bg-\[\#4b83ee\], button.bg-\[\#4b83ee\] {
+  color: #ffffff !important;
+}

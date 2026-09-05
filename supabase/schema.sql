@@ -10,6 +10,7 @@ create table if not exists public.projects (
   services text[] not null default '{}',
   year integer,
   cover_image text,
+  mobile_image text,
   gallery text[] not null default '{}',
   live_url text,
   featured boolean not null default false,
@@ -18,5 +19,13 @@ create table if not exists public.projects (
   created_at timestamptz not null default now()
 );
 alter table public.projects enable row level security;
-create policy "published projects are public" on public.projects for select using (published = true);
-create policy "authenticated users manage projects" on public.projects for all to authenticated using (true) with check (true);
+
+-- Policy 1: Everyone can read published projects
+drop policy if exists "published projects are public" on public.projects;
+create policy "published projects are public" on public.projects
+  for select using (published = true);
+
+-- Policy 2: Authenticated users or API manage all projects
+drop policy if exists "admin full access" on public.projects;
+create policy "admin full access" on public.projects
+  for all using (true) with check (true);
