@@ -1,4 +1,4 @@
-﻿import { requireAdmin } from "@/lib/admin";
+import { requireAdmin } from "@/lib/admin";
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@supabase/supabase-js";
@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { Project } from "@/types/project";
 
+export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 async function getDashboardData() {

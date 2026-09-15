@@ -9,6 +9,8 @@ function getSupabase() {
   return createClient(url, key, { auth: { persistSession: false } });
 }
 
+export const runtime = "edge";
+
 export async function GET(
   _req: NextRequest,
   context: { params: Promise<{ id: string }> }
@@ -20,11 +22,18 @@ export async function GET(
   const db = getSupabase();
   if (!db) return NextResponse.json({ error: "Supabase not configured" }, { status: 500 });
 
-  const { data, error } = await db.from("projects").select("*").eq("id", id).maybeSingle();
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
-  if (!data) return NextResponse.json({ error: "Project not found" }, { status: 404 });
+  try {
+    const { data, error } = await db.from("projects").select("*").eq("id", id).maybeSingle();
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+    if (!data) return NextResponse.json({ error: "Project not found" }, { status: 404 });
 
-  return NextResponse.json({ project: data });
+    return NextResponse.json({ project: data });
+  } catch (err: unknown) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Failed to fetch project" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function PUT(
@@ -88,8 +97,15 @@ export async function DELETE(
   const db = getSupabase();
   if (!db) return NextResponse.json({ error: "Supabase not configured" }, { status: 500 });
 
-  const { error } = await db.from("projects").delete().eq("id", id);
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  try {
+    const { error } = await db.from("projects").delete().eq("id", id);
+    if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
-  return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true });
+  } catch (err: unknown) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Failed to delete project" },
+      { status: 500 }
+    );
+  }
 }

@@ -1,5 +1,7 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { isAuthenticatedAdmin } from "@/lib/admin";
+
+export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
   const authed = await isAuthenticatedAdmin();

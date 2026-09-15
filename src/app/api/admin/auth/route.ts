@@ -1,6 +1,8 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { ADMIN_COOKIE_NAME, getAdminPassword } from "@/lib/admin";
+
+export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
   try {

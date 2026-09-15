@@ -4,15 +4,20 @@ import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
+export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 async function getProjectById(id: string) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) return null;
-  const db = createClient(url, key, { auth: { persistSession: false } });
-  const { data } = await db.from("projects").select("*").eq("id", id).maybeSingle();
-  return data;
+  try {
+    const db = createClient(url, key, { auth: { persistSession: false } });
+    const { data } = await db.from("projects").select("*").eq("id", id).maybeSingle();
+    return data;
+  } catch {
+    return null;
+  }
 }
 
 export default async function EditProjectPage({

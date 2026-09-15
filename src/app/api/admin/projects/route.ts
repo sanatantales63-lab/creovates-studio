@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { isAuthenticatedAdmin } from "@/lib/admin";
 
@@ -8,6 +8,8 @@ function getSupabase() {
   if (!url || !key) return null;
   return createClient(url, key, { auth: { persistSession: false } });
 }
+
+export const runtime = "edge";
 
 export async function GET() {
   const authed = await isAuthenticatedAdmin();
@@ -23,26 +25,33 @@ export async function GET() {
     );
   }
 
-  const { data, error } = await db
-    .from("projects")
-    .select("*")
-    .order("display_order", { ascending: true })
-    .order("created_at", { ascending: false });
+  try {
+    const { data, error } = await db
+      .from("projects")
+      .select("*")
+      .order("display_order", { ascending: true })
+      .order("created_at", { ascending: false });
 
-  if (error) {
-    if (error.code === "PGRST205" || error.message.includes("does not exist") || error.message.includes("not find")) {
-      return NextResponse.json(
-        {
-          error: "Table 'projects' does not exist yet. Please go to Admin > Database Setup to copy and run the SQL schema in your Supabase SQL Editor.",
-          tableMissing: true,
-        },
-        { status: 404 }
-      );
+    if (error) {
+      if (error.code === "PGRST205" || error.message.includes("does not exist") || error.message.includes("not find")) {
+        return NextResponse.json(
+          {
+            error: "Table 'projects' does not exist yet. Please go to Admin > Database Setup to copy and run the SQL schema in your Supabase SQL Editor.",
+            tableMissing: true,
+          },
+          { status: 404 }
+        );
+      }
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
 
-  return NextResponse.json({ projects: data || [] });
+    return NextResponse.json({ projects: data || [] });
+  } catch (err: unknown) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : "Failed to fetch projects" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(req: NextRequest) {

@@ -1,6 +1,7 @@
-﻿import { requireAdmin } from "@/lib/admin";
+import { requireAdmin } from "@/lib/admin";
 import { UrlImporter } from "@/components/admin/url-importer";
 
+export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 export default async function AdminImportPage() {
