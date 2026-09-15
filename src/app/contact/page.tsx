@@ -2,13 +2,12 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { ContactSection } from "@/components/contact-section";
-import { ArrowUpRight, Mail, Phone, MessageSquare, ArrowLeft } from "lucide-react";
+import { ArrowUpRight, Mail, Phone, MessageSquare, ArrowLeft, ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Contact & Start a Project",
   description:
-    "Connect with Creovates Studio via WhatsApp, Email, or Phone. Tell us about your project requirements.",
+    "Connect with Creovates Studio via WhatsApp, Email, or Phone. Ready to build something premium?",
 };
 
 const CONTACT_CHANNELS = [
@@ -48,7 +47,7 @@ export default function ContactPage() {
       <SiteHeader />
 
       {/* Hero Header */}
-      <section className="site-grid px-5 pb-16 pt-40 md:px-9 md:pt-52 border-b border-white/[.08]">
+      <section className="site-grid px-5 pb-16 pt-40 md:px-9 md:pt-52">
         <div className="mx-auto max-w-[1600px] w-full">
           <div className="mb-8">
             <Link
@@ -59,7 +58,7 @@ export default function ContactPage() {
               <span>Back to Home</span>
             </Link>
           </div>
-          <p className="eyebrow">07 — Contact & Enquiries</p>
+          <p className="eyebrow">07 — Contact &amp; Enquiries</p>
           <div className="mt-8 grid gap-12 lg:grid-cols-12 items-end">
             <div className="lg:col-span-8">
               <h1 className="text-[clamp(3.8rem,9vw,8.5rem)] font-medium leading-[.84] tracking-[-.085em]">
@@ -70,13 +69,14 @@ export default function ContactPage() {
             </div>
             <div className="lg:col-span-4 lg:pb-3">
               <p className="text-base leading-7 text-[#8e949d]">
-                Have an ambitious idea or need a high-performance website? Reach out through any channel below or submit an enquiry.
+                Have an ambitious idea or need a high-performance website? Reach
+                out through any channel below or fill out our project brief.
               </p>
             </div>
           </div>
 
           {/* Direct Contact Cards */}
-          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 border-t border-white/[.08] pt-12">
             {CONTACT_CHANNELS.map((ch) => {
               const Icon = ch.icon;
               return (
@@ -122,8 +122,33 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Interactive Form Section */}
-      <ContactSection />
+      {/* Start Project CTA banner */}
+      <section className="border-t border-white/[.08] px-5 py-20 md:px-9">
+        <div className="mx-auto flex max-w-[1600px] flex-col items-start justify-between gap-8 md:flex-row md:items-center">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[.16em] text-[#4b83ee]">
+              Project Brief
+            </p>
+            <h2 className="mt-3 text-3xl font-medium tracking-[-.06em] text-[#f4f4f2] md:text-5xl">
+              Ready to start?<br />
+              <span className="text-[#8e949d]">Fill out our brief.</span>
+            </h2>
+            <p className="mt-4 max-w-sm text-sm leading-6 text-[#8e949d]">
+              Share your budget, timeline and what you want to build — we&apos;ll
+              come back within 24 hours.
+            </p>
+          </div>
+          <Link
+            href="/start-project"
+            className="group inline-flex items-center gap-3 rounded-full bg-[#f4f4f2] px-8 py-5 text-[11px] font-bold uppercase tracking-[.15em] text-[#08090b] transition-all duration-300 hover:bg-white hover:shadow-[0_0_48px_rgba(75,131,238,.28)] focus-ring"
+          >
+            <span>Start the brief</span>
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#08090b] transition-transform duration-300 group-hover:rotate-45">
+              <ArrowRight size={14} className="text-[#f4f4f2]" />
+            </span>
+          </Link>
+        </div>
+      </section>
 
       <SiteFooter />
     </main>

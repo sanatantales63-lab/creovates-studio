@@ -14,6 +14,7 @@ import {
   X,
   Sparkles,
   Zap,
+  Inbox,
 } from "lucide-react";
 import { BrandMark } from "@/components/brand-mark";
 
@@ -47,6 +48,12 @@ export function AdminSidebar() {
       href: "/admin/import",
       icon: Zap,
       active: pathname === "/admin/import",
+    },
+    {
+      name: "Client Leads",
+      href: "/admin/leads",
+      icon: Inbox,
+      active: pathname === "/admin/leads",
     },
     {
       name: "Database Setup",
