@@ -1,228 +1,124 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import { useRef, useState } from "react";
+import { useScroll, useMotionValueEvent } from "motion/react";
 
-/* ─────────────────────────────────────────────────────────────
-   PROCESS STEPS DATA
-   Simple, direct, client-friendly 6-step workflow.
-   ───────────────────────────────────────────────────────────── */
-const STEPS = [
+const PROCESS_STEPS = [
   {
     num: "01",
-    title: "Discover",
-    desc: "We understand your business, audience and goals.",
+    title: "Discovery",
+    desc: "We start by understanding your business, commercial goals, and target audience through a focused strategic consultation.",
   },
   {
     num: "02",
-    title: "Define",
-    desc: "We decide what the website needs to do.",
+    title: "Design",
+    desc: "Our studio crafts a bespoke visual direction, interactive prototype, and editorial architecture tailored to your brand.",
   },
   {
     num: "03",
-    title: "Design",
-    desc: "We create the visual direction and user experience.",
+    title: "Development",
+    desc: "We bring the design to life with clean, fast, custom code, motion choreography, and AI/WhatsApp automation integrations.",
   },
   {
     num: "04",
-    title: "Build",
-    desc: "We turn the design into a fast, responsive website.",
-  },
-  {
-    num: "05",
-    title: "Refine",
-    desc: "We test, polish and fix the details.",
-  },
-  {
-    num: "06",
     title: "Launch",
-    desc: "Your website goes live and is ready to grow.",
+    desc: "After rigorous performance testing and your final sign-off, we deploy globally and support your ongoing growth.",
   },
-] as const;
+];
+
+const THRESHOLDS = [0.05, 0.25, 0.45, 0.65];
 
 export function ProcessSection() {
-  const reduced = useReducedMotion();
-  const [activeStep, setActiveStep] = useState<string | null>("01");
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [visibleSteps, setVisibleSteps] = useState(1);
 
-  const handleActivate = useCallback((num: string) => {
-    setActiveStep(num);
-  }, []);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
 
-  const handleToggle = useCallback((num: string) => {
-    setActiveStep((prev) => (prev === num ? null : num));
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    // Keep 01 active on leave so the layout remains populated and balanced
-    setActiveStep("01");
-  }, []);
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    let count = 0;
+    for (let idx = 0; idx < THRESHOLDS.length; idx++) {
+      if (latest >= THRESHOLDS[idx]) count = idx + 1;
+    }
+    setVisibleSteps(Math.max(1, count));
+  });
 
   return (
-    <section
+    <div
+      ref={containerRef}
       id="process"
-      className="relative bg-[#f4f4f2] px-5 py-24 text-[#08090b] md:px-9 md:py-36 overflow-hidden"
+      className="relative"
+      style={{ height: "300vh" }}
     >
-      {/* ── Background Watermark (ultra-subtle editorial typography) ── */}
-      <p
-        className="watermark bottom-[-2%] left-[-5%] !text-[#08090b] pointer-events-none select-none opacity-[0.028]"
-        aria-hidden
-      >
-        CREOVATES.
-      </p>
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between">
+        {/* Atmospheric Process Backdrop */}
+        <div className="absolute inset-0 z-0">
+          <div
+            className="w-full h-full"
+            style={{
+              backgroundImage: `
+                radial-gradient(circle at 50% 45%, rgba(75, 131, 238, 0.24) 0%, rgba(29, 78, 216, 0.08) 45%, transparent 72%),
+                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px)
+              `,
+              backgroundSize: "100% 100%, 56px 56px, 56px 56px",
+            }}
+          />
+          <div className="absolute inset-0 bg-[#08090b]/75" />
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#08090b] to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#08090b] to-transparent" />
+        </div>
 
-      <div className="relative mx-auto max-w-[1600px]">
-        {/* ── Section Header: Headline + Supporting Copy ── */}
-        <div className="flex flex-col justify-between gap-8 md:flex-row md:items-start">
-          <div>
-            <p className="eyebrow !text-[#555b63]">04 — Process</p>
-            <h2 className="mt-8 text-[clamp(3rem,6vw,6rem)] font-medium leading-[.88] tracking-[-.075em]">
-              FROM IDEA<br />TO LIVE.
-            </h2>
-          </div>
-          <p className="max-w-xs text-sm leading-6 text-[#555b63] md:pt-14">
-            A clear process keeps every project focused, efficient and moving forward.
+        {/* Top Centered Title (matches J&T `ProcessSection`) */}
+        <div className="relative z-10 text-center pt-24 md:pt-28 px-4">
+          <span className="inline-block border border-[#4b83ee]/40 text-[#4b83ee] rounded-full px-5 py-1.5 text-sm font-medium mb-5">
+            Our Process
+          </span>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-wider uppercase">
+            <span className="text-shine-blue">PROCESS</span>
+          </h2>
+          <p className="text-xs sm:text-sm text-[#8e949d] mt-3 font-mono uppercase tracking-widest">
+            Scroll to reveal each phase ({visibleSteps} / {PROCESS_STEPS.length})
           </p>
         </div>
 
-        {/* ── Desktop & Tablet: Horizontal 6-Column Process ── */}
-        <div
-          className="mt-20 hidden sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 border-t border-black/10"
-          onMouseLeave={handleMouseLeave}
-        >
-          {STEPS.map((step) => {
-            const isActive = activeStep === step.num;
-            const isDimmed = activeStep !== null && !isActive;
-
-            return (
-              <div
-                key={step.num}
-                className={`process-col relative group min-h-[280px] border-b border-black/10 py-6 sm:px-4 lg:first:pl-0 lg:last:pr-0 lg:border-r lg:last:border-r-0 lg:border-b-0 cursor-pointer transition-all duration-300 ${
-                  isActive ? "process-col--active" : "process-col--inactive"
-                } ${isDimmed ? "opacity-45" : "opacity-100"}`}
-                onMouseEnter={() => handleActivate(step.num)}
-                onClick={() => handleActivate(step.num)}
-                onFocus={() => handleActivate(step.num)}
-                role="button"
-                tabIndex={0}
-                aria-expanded={isActive}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    handleActivate(step.num);
-                  }
-                }}
-              >
-                {/* Active Top Accent Line */}
-                <motion.div
-                  className="process-col-accent"
-                  initial={false}
-                  animate={{
-                    scaleX: isActive ? 1 : 0,
-                    opacity: isActive ? 1 : 0,
-                  }}
-                  transition={{
-                    duration: reduced ? 0 : 0.3,
-                    ease: [0.2, 0.8, 0.2, 1],
-                  }}
-                />
-
-                {/* Step Number */}
-                <div className="flex items-center justify-between">
-                  <span
-                    className={`text-[11px] font-bold tracking-[0.16em] transition-colors duration-300 ${
-                      isActive ? "text-[#4b83ee]" : "text-[#4b83ee]/50"
+        {/* Bottom 4-Column Step Reveal Grid */}
+        <div className="relative z-10 px-4 md:px-8 lg:px-16 pb-12 md:pb-20">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0">
+              {PROCESS_STEPS.map((step, idx) => {
+                const isRevealed = idx < visibleSteps;
+                return (
+                  <div
+                    key={step.num}
+                    className={`relative lg:px-8 ${
+                      idx < PROCESS_STEPS.length - 1
+                        ? "lg:border-r lg:border-white/15"
+                        : ""
+                    } transition-all duration-700 ease-out ${
+                      isRevealed
+                        ? "opacity-100 translate-y-0"
+                        : "opacity-0 translate-y-24 pointer-events-none"
                     }`}
                   >
-                    {step.num}
-                  </span>
-                </div>
-
-                {/* Step Title */}
-                <h3
-                  className={`mt-10 text-2xl tracking-[-0.045em] font-medium transition-all duration-300 ${
-                    isActive ? "text-[#08090b] translate-y-[-2px]" : "text-[#08090b]/80"
-                  }`}
-                >
-                  {step.title}
-                </h3>
-
-                {/* Step Description — smoothly expands close to the step */}
-                <AnimatePresence initial={false}>
-                  {isActive && (
-                    <motion.div
-                      initial={reduced ? { opacity: 0 } : { opacity: 0, height: 0, y: 6 }}
-                      animate={reduced ? { opacity: 1 } : { opacity: 1, height: "auto", y: 0 }}
-                      exit={reduced ? { opacity: 0 } : { opacity: 0, height: 0, y: 4 }}
-                      transition={{ duration: reduced ? 0 : 0.32, ease: [0.2, 0.8, 0.2, 1] }}
-                      className="overflow-hidden"
-                    >
-                      <p className="mt-4 text-sm leading-relaxed text-[#555b63]">
-                        {step.desc}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* ── Mobile: Vertical Accordion (one step open at a time) ── */}
-        <div className="mt-14 sm:hidden border-t border-black/10">
-          {STEPS.map((step) => {
-            const isActive = activeStep === step.num;
-
-            return (
-              <div
-                key={step.num}
-                className={`border-b border-black/10 py-5 transition-colors duration-200 ${
-                  isActive ? "bg-black/[0.02] px-3" : ""
-                }`}
-                onClick={() => handleToggle(step.num)}
-                role="button"
-                tabIndex={0}
-                aria-expanded={isActive}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    handleToggle(step.num);
-                  }
-                }}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className="text-[11px] font-bold tracking-[0.16em] text-[#4b83ee]">
-                      {step.num}
+                    <span className="text-sm text-[#4b83ee] font-mono font-medium block mb-3">
+                      .{step.num}
                     </span>
-                    <h3 className="text-xl font-medium tracking-[-0.04em] text-[#08090b]">
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
                       {step.title}
                     </h3>
+                    <p className="text-[#b0b5be] text-sm leading-relaxed">
+                      {step.desc}
+                    </p>
                   </div>
-                  <span className="text-xs font-bold text-[#555b63]/60">
-                    {isActive ? "—" : "+"}
-                  </span>
-                </div>
-
-                <AnimatePresence initial={false}>
-                  {isActive && (
-                    <motion.div
-                      initial={reduced ? { opacity: 0 } : { opacity: 0, height: 0 }}
-                      animate={reduced ? { opacity: 1 } : { opacity: 1, height: "auto" }}
-                      exit={reduced ? { opacity: 0 } : { opacity: 0, height: 0 }}
-                      transition={{ duration: reduced ? 0 : 0.28, ease: [0.2, 0.8, 0.2, 1] }}
-                      className="overflow-hidden"
-                    >
-                      <p className="mt-3 pl-7 text-sm leading-relaxed text-[#555b63]">
-                        {step.desc}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            );
-          })}
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

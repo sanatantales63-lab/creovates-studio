@@ -1,8 +1,17 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { SiteFooter } from "@/components/site-footer";
+import {
+  ArrowUpRight,
+  Mail,
+  Phone,
+  MessageSquare,
+  ArrowLeft,
+  Clock,
+  Sparkles,
+} from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
-import { ArrowUpRight, Mail, Phone, MessageSquare, ArrowLeft, ArrowRight } from "lucide-react";
+import { ContactSection } from "@/components/contact-section";
+import { SiteFooter } from "@/components/site-footer";
 
 export const metadata: Metadata = {
   title: "Contact & Start a Project",
@@ -14,69 +23,82 @@ const CONTACT_CHANNELS = [
   {
     title: "Direct WhatsApp",
     value: "+91 82509 67250",
-    description: "Instant chat for quick discussions, quotes, and project kickoffs.",
+    description:
+      "Instant chat for quick discussions, project quotes, and kickoffs.",
     href: "https://wa.me/918250967250?text=Hi%20Creovates%20Studio%2C%20I%20have%20a%20project%20enquiry",
     action: "Chat on WhatsApp",
     icon: MessageSquare,
     isExternal: true,
-    highlight: true,
+    badge: "Fastest Response",
   },
   {
     title: "Email Studio",
     value: "mindverse2000@gmail.com",
-    description: "Send detailed briefs, RFPs, documents, or formal project enquiries.",
+    description:
+      "Send detailed briefs, RFPs, documents, or formal project enquiries.",
     href: "mailto:mindverse2000@gmail.com?subject=New%20Project%20Enquiry%20-%20Creovates",
     action: "Send an Email",
     icon: Mail,
     isExternal: false,
+    badge: "24h Reply",
   },
   {
     title: "Phone Call",
     value: "+91 82509 67250",
-    description: "Speak directly with our studio lead for immediate consultation.",
+    description:
+      "Speak directly with our studio lead for immediate consultation.",
     href: "tel:+918250967250",
     action: "Call Studio",
     icon: Phone,
     isExternal: false,
+    badge: "Mon – Sat",
   },
 ];
 
 export default function ContactPage() {
   return (
-    <main>
+    <main className="min-h-screen bg-[#08090b] text-white">
       <SiteHeader />
 
-      {/* Hero Header */}
-      <section className="site-grid px-5 pb-16 pt-40 md:px-9 md:pt-52">
-        <div className="mx-auto max-w-[1600px] w-full">
-          <div className="mb-8">
+      {/* J&T-Style Contact Hero */}
+      <section className="relative pt-36 pb-16 px-4 md:px-8 lg:px-16 overflow-hidden">
+        <div
+          className="absolute inset-0 pointer-events-none opacity-35"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 50% 25%, rgba(75, 131, 238, 0.3) 0%, transparent 65%)",
+          }}
+        />
+        <div className="relative z-10 max-w-4xl mx-auto text-center">
+          <div className="mb-6">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.14em] text-[#8e949d] transition-colors hover:text-[#f4f4f2]"
+              className="inline-flex items-center gap-2 text-xs font-medium text-[#8e949d] hover:text-white transition-colors"
             >
-              <ArrowLeft size={14} />
-              <span>Back to Home</span>
+              <ArrowLeft className="w-3.5 h-3.5" />
+              Back to Home
             </Link>
           </div>
-          <p className="eyebrow">07 — Contact &amp; Enquiries</p>
-          <div className="mt-8 grid gap-12 lg:grid-cols-12 items-end">
-            <div className="lg:col-span-8">
-              <h1 className="text-[clamp(3.8rem,9vw,8.5rem)] font-medium leading-[.84] tracking-[-.085em]">
-                LET&apos;S MAKE<br />
-                <span className="text-[#8e949d]">SOMETHING</span><br />
-                MATTER.
-              </h1>
-            </div>
-            <div className="lg:col-span-4 lg:pb-3">
-              <p className="text-base leading-7 text-[#8e949d]">
-                Have an ambitious idea or need a high-performance website? Reach
-                out through any channel below or fill out our project brief.
-              </p>
-            </div>
-          </div>
+          <span className="inline-block border border-[#4b83ee]/40 text-[#4b83ee] rounded-full px-5 py-1.5 text-sm font-medium mb-6">
+            Get in Touch
+          </span>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.1] tracking-tight">
+            Let&apos;s start a{" "}
+            <span className="text-shine-blue italic font-serif font-normal">
+              conversation
+            </span>
+          </h1>
+          <p className="text-[#8e949d] text-base md:text-lg max-w-xl mx-auto mt-6 leading-relaxed">
+            Have a project in mind or want to explore how we can elevate your
+            digital presence? Reach out directly or complete our project brief.
+          </p>
+        </div>
+      </section>
 
-          {/* Direct Contact Cards */}
-          <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 border-t border-white/[.08] pt-12">
+      {/* 3-Column Animated Highlight Contact Cards */}
+      <section className="pb-20 px-4 md:px-8 lg:px-16">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {CONTACT_CHANNELS.map((ch) => {
               const Icon = ch.icon;
               return (
@@ -85,71 +107,73 @@ export default function ContactPage() {
                   href={ch.href}
                   target={ch.isExternal ? "_blank" : undefined}
                   rel={ch.isExternal ? "noopener noreferrer" : undefined}
-                  className={`group relative flex flex-col justify-between rounded-sm border p-6 md:p-8 transition duration-300 hover:-translate-y-1 ${
-                    ch.highlight
-                      ? "border-[#4b83ee]/40 bg-[#101216] hover:border-[#4b83ee]"
-                      : "border-white/[.08] bg-[#0c0d10] hover:border-white/20"
-                  }`}
+                  className="group rounded-2xl bg-[#101216] border border-white/10 hover:border-[#4b83ee]/50 p-7 transition-all duration-300 hover:-translate-y-1 animated-highlight-section spotlight-card flex flex-col justify-between min-h-[260px]"
                 >
                   <div>
-                    <div className="flex items-center justify-between">
-                      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/[.04] text-[#4b83ee]">
-                        <Icon size={16} />
-                      </span>
-                      <span className="text-[10px] font-bold uppercase tracking-[.14em] text-[#8e949d]">
-                        {ch.title}
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="w-12 h-12 rounded-xl bg-[#4b83ee]/15 border border-[#4b83ee]/30 flex items-center justify-center text-[#4b83ee]">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <span className="text-xs font-mono text-[#4b83ee] bg-[#4b83ee]/10 border border-[#4b83ee]/25 px-3 py-1 rounded-full">
+                        {ch.badge}
                       </span>
                     </div>
-                    <p className="mt-6 text-xl font-medium tracking-tight text-[#f4f4f2]">
+
+                    <div className="text-xs font-mono uppercase tracking-wider text-[#8e949d]">
+                      {ch.title}
+                    </div>
+                    <div className="text-xl font-bold text-white mt-1.5 break-all">
                       {ch.value}
-                    </p>
-                    <p className="mt-2 text-xs leading-5 text-[#8e949d]">
+                    </div>
+                    <p className="text-sm text-[#8e949d] mt-3 leading-relaxed">
                       {ch.description}
                     </p>
                   </div>
 
-                  <div className="mt-8 flex items-center gap-1.5 text-xs font-bold uppercase tracking-[.14em] text-[#4b83ee] transition group-hover:text-[#f4f4f2]">
+                  <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-sm font-semibold text-[#4b83ee] group-hover:text-white transition-colors">
                     <span>{ch.action}</span>
-                    <ArrowUpRight
-                      size={13}
-                      className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    />
+                    <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </div>
                 </a>
               );
             })}
           </div>
-        </div>
-      </section>
 
-      {/* Start Project CTA banner */}
-      <section className="border-t border-white/[.08] px-5 py-20 md:px-9">
-        <div className="mx-auto flex max-w-[1600px] flex-col items-start justify-between gap-8 md:flex-row md:items-center">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[.16em] text-[#4b83ee]">
-              Project Brief
-            </p>
-            <h2 className="mt-3 text-3xl font-medium tracking-[-.06em] text-[#f4f4f2] md:text-5xl">
-              Ready to start?<br />
-              <span className="text-[#8e949d]">Fill out our brief.</span>
-            </h2>
-            <p className="mt-4 max-w-sm text-sm leading-6 text-[#8e949d]">
-              Share your budget, timeline and what you want to build — we&apos;ll
-              come back within 24 hours.
-            </p>
+          {/* Interactive Brief Banner Card */}
+          <div className="mt-10 rounded-2xl bg-[#101216] border border-white/10 p-8 md:p-10 animated-highlight-section flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="space-y-2 max-w-xl">
+              <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-[#4b83ee]">
+                <Sparkles className="w-3.5 h-3.5" /> Interactive Project Planner
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white">
+                Know what you want to build?{" "}
+                <span className="text-shine-blue">Start the brief.</span>
+              </h2>
+              <p className="text-sm text-[#8e949d] leading-relaxed">
+                Select your services, budget range, and timeline in 60 seconds —
+                we&apos;ll prepare a tailored roadmap and get back to you within
+                24 hours.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-4 shrink-0">
+              <div className="hidden sm:flex items-center gap-2 text-xs text-[#8e949d] mr-2">
+                <Clock className="w-4 h-4 text-[#4b83ee]" />
+                <span>Takes ~1 minute</span>
+              </div>
+              <Link
+                href="/start-project"
+                className="bg-[#4b83ee] hover:bg-[#3b73de] text-white px-7 py-3.5 rounded-full text-sm font-semibold transition-all duration-200 shadow-blue inline-flex items-center gap-2"
+              >
+                Open Project Planner
+                <ArrowUpRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
-          <Link
-            href="/start-project"
-            className="group inline-flex items-center gap-3 rounded-full bg-[#f4f4f2] px-8 py-5 text-[11px] font-bold uppercase tracking-[.15em] text-[#08090b] transition-all duration-300 hover:bg-white hover:shadow-[0_0_48px_rgba(75,131,238,.28)] focus-ring"
-          >
-            <span>Start the brief</span>
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#08090b] transition-transform duration-300 group-hover:rotate-45">
-              <ArrowRight size={14} className="text-[#f4f4f2]" />
-            </span>
-          </Link>
         </div>
       </section>
 
+      <ContactSection />
       <SiteFooter />
     </main>
   );

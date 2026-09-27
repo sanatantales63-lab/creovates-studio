@@ -17,7 +17,7 @@ import {
   Smartphone,
   AlertCircle,
   Database,
-  ArrowUpDown,
+  Zap,
 } from "lucide-react";
 import { Project } from "@/types/project";
 
@@ -64,7 +64,9 @@ export function ProjectTable() {
       });
       if (res.ok) {
         setProjects((prev) =>
-          prev.map((p) => (p.id === project.id ? { ...p, published: !p.published } : p))
+          prev.map((p) =>
+            p.id === project.id ? { ...p, published: !p.published } : p
+          )
         );
       }
     } catch (err) {
@@ -81,7 +83,9 @@ export function ProjectTable() {
       });
       if (res.ok) {
         setProjects((prev) =>
-          prev.map((p) => (p.id === project.id ? { ...p, featured: !p.featured } : p))
+          prev.map((p) =>
+            p.id === project.id ? { ...p, featured: !p.featured } : p
+          )
         );
       }
     } catch (err) {
@@ -90,10 +94,13 @@ export function ProjectTable() {
   }
 
   async function deleteProject(id: string) {
-    if (!window.confirm("Are you sure you want to delete this project?")) return;
+    if (!window.confirm("Are you sure you want to delete this project?"))
+      return;
     setDeletingId(id);
     try {
-      const res = await fetch(`/api/admin/projects/${id}`, { method: "DELETE" });
+      const res = await fetch(`/api/admin/projects/${id}`, {
+        method: "DELETE",
+      });
       if (res.ok) {
         setProjects((prev) => prev.filter((p) => p.id !== id));
       }
@@ -116,42 +123,57 @@ export function ProjectTable() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-7 pb-16">
       {/* Top Header */}
-      <div className="flex flex-col justify-between gap-4 border-b border-white/[.08] pb-6 sm:flex-row sm:items-center">
+      <div className="flex flex-col justify-between gap-4 border-b border-white/10 pb-6 sm:flex-row sm:items-end">
         <div>
-          <p className="eyebrow">Portfolio Archive</p>
-          <h1 className="mt-1 text-3xl font-medium tracking-tight text-[#f4f4f2] md:text-4xl">
-            ALL PROJECTS
+          <span className="inline-flex items-center gap-1.5 border border-[#4b83ee]/40 bg-[#4b83ee]/10 text-[#4b83ee] rounded-full px-4 py-1 text-xs font-medium mb-3">
+            <Sparkles size={12} />
+            Portfolio Archive
+          </span>
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+            All{" "}
+            <span className="text-shine-blue italic font-serif font-normal">
+              projects
+            </span>
           </h1>
         </div>
 
-        <Link
-          href="/admin/projects/new"
-          className="flex items-center gap-2 rounded-lg bg-[#4b83ee] px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-[#3d6fd4]"
-        >
-          <Plus size={16} />
-          <span>Add Project</span>
-        </Link>
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            href="/admin/import"
+            className="flex items-center gap-2 rounded-full border border-[#4b83ee]/40 bg-[#4b83ee]/10 px-5 py-2.5 text-xs font-semibold text-[#4b83ee] transition hover:bg-[#4b83ee]/20"
+          >
+            <Zap size={14} />
+            <span>URL Auto-Import</span>
+          </Link>
+          <Link
+            href="/admin/projects/new"
+            className="flex items-center gap-2 rounded-full bg-[#4b83ee] px-6 py-2.5 text-xs font-semibold text-white transition hover:bg-[#3b73de] shadow-blue"
+          >
+            <Plus size={16} />
+            <span>Add Project</span>
+          </Link>
+        </div>
       </div>
 
       {/* Table Missing Alert */}
       {tableMissing && (
-        <div className="flex flex-col items-start justify-between gap-4 rounded-xl border border-[#4b83ee]/30 bg-[#4b83ee]/10 p-5 sm:flex-row sm:items-center">
-          <div className="flex items-center gap-3">
+        <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-[#4b83ee]/40 bg-[#4b83ee]/10 p-6 sm:flex-row sm:items-center animated-highlight-section">
+          <div className="flex items-center gap-3.5">
             <Database size={22} className="text-[#4b83ee]" />
             <div>
-              <p className="text-sm font-semibold text-[#f4f4f2]">
+              <p className="text-sm font-semibold text-white">
                 Database table &apos;projects&apos; not initialized yet
               </p>
-              <p className="text-xs text-[#8e949d]">
+              <p className="text-xs text-[#b0b5be]">
                 Run the supplied SQL schema once in your Supabase SQL Editor.
               </p>
             </div>
           </div>
           <Link
             href="/admin/setup"
-            className="rounded-lg bg-[#4b83ee] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#3d6fd4]"
+            className="rounded-full bg-[#4b83ee] px-5 py-2 text-xs font-semibold text-white transition hover:bg-[#3b73de] shadow-blue"
           >
             Open SQL Setup →
           </Link>
@@ -159,34 +181,37 @@ export function ProjectTable() {
       )}
 
       {error && !tableMissing && (
-        <div className="flex items-center gap-3 rounded-xl border border-[#e05252]/30 bg-[#e05252]/10 p-4 text-xs text-[#e05252]">
+        <div className="flex items-center gap-3 rounded-2xl border border-[#e05252]/30 bg-[#e05252]/10 p-4 text-xs text-[#e05252]">
           <AlertCircle size={16} className="shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
       {/* Search and Filters Bar */}
-      <div className="flex flex-col gap-3 rounded-xl border border-white/[.08] bg-[#0d0f12] p-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-[#101216] p-4 sm:flex-row sm:items-center sm:justify-between animated-highlight-section">
         <div className="relative flex-1">
-          <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#8e949d]" />
+          <Search
+            size={15}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-[#4b83ee]"
+          />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search projects by title, client, or category..."
-            className="w-full rounded-lg border border-white/[.1] bg-[#08090b] py-2.5 pl-10 pr-4 text-xs text-[#f4f4f2] placeholder-[#8e949d]/40 focus:border-[#4b83ee] focus:outline-none"
+            className="w-full rounded-full border border-white/15 bg-[#08090b] py-2.5 pl-11 pr-4 text-xs text-white placeholder-[#8e949d]/50 focus:border-[#4b83ee] focus:outline-none transition-colors"
           />
         </div>
 
-        <div className="flex items-center gap-1 border-white/[.08] sm:border-l sm:pl-3">
+        <div className="flex items-center gap-1.5 border-white/10 sm:border-l sm:pl-4">
           {(["all", "published", "draft"] as const).map((mode) => (
             <button
               key={mode}
               onClick={() => setFilter(mode)}
-              className={`rounded-md px-3 py-1.5 text-xs font-medium capitalize transition ${
+              className={`rounded-full px-4 py-2 text-xs font-medium capitalize transition-all ${
                 filter === mode
-                  ? "bg-white/[.1] text-[#f4f4f2]"
-                  : "text-[#8e949d] hover:bg-white/[.04] hover:text-[#f4f4f2]"
+                  ? "bg-[#4b83ee] text-white shadow-blue"
+                  : "text-[#8e949d] hover:bg-white/5 hover:text-white"
               }`}
             >
               {mode}
@@ -197,36 +222,47 @@ export function ProjectTable() {
 
       {/* Projects List */}
       {loading ? (
-        <div className="flex h-64 items-center justify-center rounded-xl border border-white/[.08] bg-[#0d0f12] text-xs text-[#8e949d]">
+        <div className="flex h-64 items-center justify-center rounded-2xl border border-white/10 bg-[#101216] text-xs text-[#8e949d]">
           Loading projects from Supabase...
         </div>
       ) : filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-white/[.08] bg-[#0d0f12] py-16 text-center">
-          <p className="text-sm text-[#8e949d]">No projects found</p>
-          <p className="mt-1 text-xs text-[#8e949d]/60">
-            {search ? "Try clearing your search query." : "Click Add Project to publish your first showcase."}
+        <div className="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-[#101216] py-16 text-center animated-highlight-section">
+          <p className="text-base font-bold text-white">No projects found</p>
+          <p className="mt-1 text-xs text-[#8e949d]">
+            {search
+              ? "Try clearing your search query."
+              : "Click Add Project or URL Auto-Import to publish your first showcase."}
           </p>
           {!search && (
-            <Link
-              href="/admin/projects/new"
-              className="mt-5 inline-flex items-center gap-2 rounded-lg bg-[#4b83ee] px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-[#3d6fd4]"
-            >
-              <Plus size={15} />
-              <span>Add First Project</span>
-            </Link>
+            <div className="mt-6 flex items-center gap-3">
+              <Link
+                href="/admin/projects/new"
+                className="inline-flex items-center gap-2 rounded-full bg-[#4b83ee] px-6 py-2.5 text-xs font-semibold text-white transition hover:bg-[#3b73de] shadow-blue"
+              >
+                <Plus size={15} />
+                <span>Add First Project</span>
+              </Link>
+              <Link
+                href="/admin/import"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-xs font-medium text-white hover:border-[#4b83ee]"
+              >
+                <Zap size={14} className="text-[#4b83ee]" />
+                <span>Import from URL</span>
+              </Link>
+            </div>
           )}
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-4">
           {filtered.map((project) => (
             <div
               key={project.id}
-              className="group flex flex-col justify-between gap-5 rounded-xl border border-white/[.08] bg-[#0d0f12] p-4 transition hover:border-white/[.15] md:flex-row md:items-center"
+              className="group flex flex-col justify-between gap-5 rounded-2xl border border-white/10 bg-[#101216] p-5 transition-all hover:border-[#4b83ee]/40 md:flex-row md:items-center animated-highlight"
             >
               {/* Media Thumbnails & Info */}
               <div className="flex items-center gap-4">
                 {/* 16:9 Laptop Cover Thumbnail */}
-                <div className="relative h-14 w-24 shrink-0 overflow-hidden rounded-md border border-white/[.1] bg-[#08090b]">
+                <div className="relative h-16 w-28 shrink-0 overflow-hidden rounded-xl border border-white/10 bg-[#08090b]">
                   {project.cover_image ? (
                     <Image
                       src={project.cover_image}
@@ -243,7 +279,7 @@ export function ProjectTable() {
                 </div>
 
                 {/* 9:16 Mobile Thumbnail indicator */}
-                <div className="relative hidden h-14 w-8 shrink-0 overflow-hidden rounded-md border border-white/[.1] bg-[#08090b] sm:block">
+                <div className="relative hidden h-16 w-9 shrink-0 overflow-hidden rounded-lg border border-white/10 bg-[#08090b] sm:block">
                   {project.mobile_image ? (
                     <Image
                       src={project.mobile_image}
@@ -262,20 +298,20 @@ export function ProjectTable() {
                 {/* Project Details */}
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="text-sm font-semibold text-[#f4f4f2]">
+                    <h3 className="text-base font-bold text-white">
                       {project.title}
                     </h3>
                     {project.featured && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-[#4b83ee]/15 px-2 py-0.5 text-[9px] font-bold text-[#4b83ee]">
-                        <Star size={9} fill="currentColor" />
+                      <span className="inline-flex items-center gap-1 rounded-full border border-[#4b83ee]/40 bg-[#4b83ee]/15 px-2.5 py-0.5 text-[10px] font-semibold text-[#4b83ee]">
+                        <Star size={10} fill="currentColor" />
                         Featured
                       </span>
                     )}
                     <span
-                      className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
+                      className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
                         project.published
-                          ? "bg-[#34d399]/15 text-[#34d399]"
-                          : "bg-white/[.08] text-[#8e949d]"
+                          ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
+                          : "bg-white/10 text-[#8e949d]"
                       }`}
                     >
                       {project.published ? "Live" : "Draft"}
@@ -283,18 +319,22 @@ export function ProjectTable() {
                   </div>
 
                   <p className="mt-1 text-xs text-[#8e949d]">
-                    {project.category} {project.client ? `· ${project.client}` : ""} {project.year ? `· ${project.year}` : ""}
+                    {project.category}{" "}
+                    {project.client ? `· ${project.client}` : ""}{" "}
+                    {project.year ? `· ${project.year}` : ""}
                   </p>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center gap-2 border-t border-white/[.06] pt-3 md:border-t-0 md:pt-0">
+              <div className="flex items-center gap-2 border-t border-white/10 pt-3 md:border-t-0 md:pt-0">
                 {/* Quick Toggle Live */}
                 <button
                   onClick={() => togglePublished(project)}
-                  title={project.published ? "Unpublish to Draft" : "Publish Live"}
-                  className="rounded-lg p-2 text-[#8e949d] hover:bg-white/[.05] hover:text-[#f4f4f2]"
+                  title={
+                    project.published ? "Unpublish to Draft" : "Publish Live"
+                  }
+                  className="rounded-full border border-white/10 bg-white/5 p-2.5 text-[#b0b5be] hover:border-[#4b83ee] hover:text-white transition-all"
                 >
                   {project.published ? <Eye size={15} /> : <EyeOff size={15} />}
                 </button>
@@ -302,22 +342,27 @@ export function ProjectTable() {
                 {/* Quick Toggle Featured */}
                 <button
                   onClick={() => toggleFeatured(project)}
-                  title={project.featured ? "Remove Featured" : "Mark as Featured"}
-                  className={`rounded-lg p-2 transition ${
+                  title={
+                    project.featured ? "Remove Featured" : "Mark as Featured"
+                  }
+                  className={`rounded-full border p-2.5 transition-all ${
                     project.featured
-                      ? "text-[#4b83ee] hover:bg-[#4b83ee]/10"
-                      : "text-[#8e949d] hover:bg-white/[.05] hover:text-[#f4f4f2]"
+                      ? "border-[#4b83ee]/50 bg-[#4b83ee]/15 text-[#4b83ee]"
+                      : "border-white/10 bg-white/5 text-[#b0b5be] hover:border-[#4b83ee] hover:text-white"
                   }`}
                 >
-                  <Star size={15} fill={project.featured ? "currentColor" : "none"} />
+                  <Star
+                    size={15}
+                    fill={project.featured ? "currentColor" : "none"}
+                  />
                 </button>
 
-                {/* View on live site */}
+                {/* View Case Study on site */}
                 <Link
-                  href={project.live_url || `/work/${project.slug}`}
+                  href={`/work/${project.slug}`}
                   target="_blank"
-                  title="View on site"
-                  className="rounded-lg p-2 text-[#8e949d] hover:bg-white/[.05] hover:text-[#f4f4f2]"
+                  title="View Case Study Page"
+                  className="rounded-full border border-white/10 bg-white/5 p-2.5 text-[#b0b5be] hover:border-[#4b83ee] hover:text-white transition-all"
                 >
                   <ExternalLink size={15} />
                 </Link>
@@ -325,7 +370,7 @@ export function ProjectTable() {
                 {/* Edit Link */}
                 <Link
                   href={`/admin/projects/${project.id}`}
-                  className="flex items-center gap-1.5 rounded-lg border border-white/[.1] bg-white/[.04] px-3 py-1.5 text-xs font-semibold text-[#f4f4f2] hover:bg-white/[.08]"
+                  className="flex items-center gap-1.5 rounded-full bg-[#4b83ee] px-4 py-2 text-xs font-semibold text-white hover:bg-[#3b73de] shadow-blue transition-all"
                 >
                   <Edit size={13} />
                   <span>Edit</span>
@@ -336,7 +381,7 @@ export function ProjectTable() {
                   onClick={() => deleteProject(project.id)}
                   disabled={deletingId === project.id}
                   title="Delete project"
-                  className="rounded-lg p-2 text-[#e05252] hover:bg-[#e05252]/10 disabled:opacity-50"
+                  className="rounded-full border border-white/10 bg-white/5 p-2.5 text-[#e05252] hover:border-[#e05252]/40 hover:bg-[#e05252]/10 disabled:opacity-50 transition-all"
                 >
                   <Trash2 size={15} />
                 </button>

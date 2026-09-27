@@ -11,8 +11,9 @@ import {
   AlertTriangle,
   Cloud,
   Layers,
-  Key,
   ArrowLeft,
+  Sparkles,
+  RefreshCw,
 } from "lucide-react";
 
 const SQL_SCHEMA = `-- 1. Create the projects table
@@ -88,129 +89,173 @@ export default function SetupPage() {
   return (
     <div className="space-y-8 pb-16">
       {/* Top Header */}
-      <div className="border-b border-white/[.08] pb-6">
-        <Link
-          href="/admin"
-          className="mb-2 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[.14em] text-[#8e949d] hover:text-[#f4f4f2]"
-        >
-          <ArrowLeft size={12} />
-          Back to Dashboard
-        </Link>
-        <p className="eyebrow">Infrastructure & Integrations</p>
-        <h1 className="mt-1 text-3xl font-medium tracking-tight text-[#f4f4f2] md:text-4xl">
-          DATABASE & CLOUD SETUP
+      <div className="border-b border-white/10 pb-6">
+        <div className="mb-4">
+          <Link
+            href="/admin"
+            className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium text-[#b0b5be] hover:border-[#4b83ee] hover:text-white transition-all"
+          >
+            <ArrowLeft size={13} />
+            Back to Dashboard
+          </Link>
+        </div>
+        <span className="inline-flex items-center gap-1.5 border border-[#4b83ee]/40 bg-[#4b83ee]/10 text-[#4b83ee] rounded-full px-4 py-1 text-xs font-medium mb-3">
+          <Sparkles size={12} />
+          Infrastructure &amp; Integrations
+        </span>
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
+          Database &amp;{" "}
+          <span className="text-shine-blue italic font-serif font-normal">
+            Cloud Setup
+          </span>
         </h1>
-        <p className="mt-2 text-xs text-[#8e949d]">
-          Manage your Supabase connection, Cloudinary media pipeline, and database table schemas.
+        <p className="mt-2 text-xs sm:text-sm text-[#8e949d]">
+          Manage your Supabase connection, Cloudinary media pipeline, and
+          database table schemas.
         </p>
       </div>
 
       {/* Status Cards */}
-      <div className="grid gap-5 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2">
         {/* Supabase Card */}
-        <div className="rounded-xl border border-white/[.08] bg-[#0d0f12] p-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Database size={20} className="text-[#4b83ee]" />
-              <h2 className="text-sm font-semibold text-[#f4f4f2]">Supabase Database</h2>
+        <div className="rounded-2xl border border-white/10 bg-[#101216] p-6 md:p-7 animated-highlight-section flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#4b83ee]/15 border border-[#4b83ee]/30 text-[#4b83ee]">
+                  <Database size={18} />
+                </span>
+                <h2 className="text-base font-bold text-white">
+                  Supabase Database
+                </h2>
+              </div>
+              {checking ? (
+                <span className="text-xs font-mono text-[#8e949d]">
+                  Testing...
+                </span>
+              ) : tableExists ? (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-400">
+                  <CheckCircle2 size={13} />
+                  Table Ready
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/15 px-3 py-1 text-xs font-semibold text-amber-400">
+                  <AlertTriangle size={13} />
+                  SQL Setup Needed
+                </span>
+              )}
             </div>
-            {checking ? (
-              <span className="text-xs text-[#8e949d]">Testing...</span>
-            ) : tableExists ? (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#34d399]/15 px-3 py-0.5 text-xs font-bold text-[#34d399]">
-                <CheckCircle2 size={13} />
-                Table Ready
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#f59e0b]/15 px-3 py-0.5 text-xs font-bold text-[#f59e0b]">
-                <AlertTriangle size={13} />
-                SQL Setup Needed
-              </span>
-            )}
+
+            <p className="mt-4 text-xs leading-6 text-[#b0b5be]">
+              Connected to project ID:{" "}
+              <code className="rounded-md bg-white/10 px-2 py-0.5 font-mono text-white">
+                khsxpfjmdsefxmmbzdop
+              </code>
+            </p>
           </div>
 
-          <p className="mt-3 text-xs leading-5 text-[#8e949d]">
-            Connected to project ID:{" "}
-            <code className="rounded bg-white/[.06] px-1.5 py-0.5 text-[#f4f4f2]">
-              khsxpfjmdsefxmmbzdop
-            </code>
-          </p>
-
-          <div className="mt-5 flex items-center gap-3">
+          <div className="mt-6 pt-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-3">
             <a
               href="https://supabase.com/dashboard/project/khsxpfjmdsefxmmbzdop/sql"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#4b83ee] hover:underline"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#4b83ee] hover:text-white transition-colors"
             >
               <span>Open Supabase SQL Editor</span>
               <ExternalLink size={12} />
             </a>
             <button
               onClick={checkDb}
-              className="text-xs text-[#8e949d] hover:text-[#f4f4f2]"
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3.5 py-1.5 text-xs font-medium text-[#b0b5be] hover:border-[#4b83ee] hover:text-white transition-all"
             >
+              <RefreshCw size={12} className={checking ? "animate-spin" : ""} />
               Re-test status
             </button>
           </div>
         </div>
 
         {/* Cloudinary Card */}
-        <div className="rounded-xl border border-white/[.08] bg-[#0d0f12] p-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Cloud size={20} className="text-[#4b83ee]" />
-              <h2 className="text-sm font-semibold text-[#f4f4f2]">Cloudinary Storage</h2>
+        <div className="rounded-2xl border border-white/10 bg-[#101216] p-6 md:p-7 animated-highlight-section flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#4b83ee]/15 border border-[#4b83ee]/30 text-[#4b83ee]">
+                  <Cloud size={18} />
+                </span>
+                <h2 className="text-base font-bold text-white">
+                  Cloudinary Storage
+                </h2>
+              </div>
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-400">
+                <CheckCircle2 size={13} />
+                Configured
+              </span>
             </div>
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#34d399]/15 px-3 py-0.5 text-xs font-bold text-[#34d399]">
-              <CheckCircle2 size={13} />
-              Configured
-            </span>
+
+            <p className="mt-4 text-xs leading-6 text-[#b0b5be]">
+              Cloud Name:{" "}
+              <code className="rounded-md bg-white/10 px-2 py-0.5 font-mono text-white">
+                lko4pztb
+              </code>{" "}
+              · Preset:{" "}
+              <code className="rounded-md bg-white/10 px-2 py-0.5 font-mono text-white">
+                creovatesstudio
+              </code>
+            </p>
           </div>
 
-          <p className="mt-3 text-xs leading-5 text-[#8e949d]">
-            Cloud Name:{" "}
-            <code className="rounded bg-white/[.06] px-1.5 py-0.5 text-[#f4f4f2]">
-              lko4pztb
-            </code>{" "}
-            · Preset:{" "}
-            <code className="rounded bg-white/[.06] px-1.5 py-0.5 text-[#f4f4f2]">
-              creovatesstudio
-            </code>
-          </p>
-
-          <div className="mt-4 rounded-lg border border-white/[.06] bg-[#08090b] p-3 text-[11px] leading-5 text-[#8e949d]">
-            💡 <strong className="text-[#f4f4f2]">Status:</strong> Upload Preset <code className="text-[#4b83ee]">creovatesstudio</code> is verified active in <strong className="text-[#34d399]">Unsigned</strong> mode. Direct image uploads with automatic compression are fully operational.
+          <div className="mt-5 rounded-xl border border-white/10 bg-[#08090b] p-3.5 text-xs leading-relaxed text-[#8e949d]">
+            ⚡ <strong className="text-white">Status:</strong> Upload Preset{" "}
+            <code className="font-mono text-[#4b83ee]">creovatesstudio</code> is
+            verified active in{" "}
+            <strong className="text-emerald-400">Unsigned</strong> mode. Direct
+            image uploads with automatic client-side compression are
+            operational.
           </div>
         </div>
       </div>
 
-      {/* SQL Script Box with 1-Click Copy */}
-      <div className="rounded-xl border border-white/[.08] bg-[#0d0f12] p-6 md:p-8">
+      {/* SQL Script Box with macOS Chrome & 1-Click Copy */}
+      <div className="rounded-2xl border border-white/10 bg-[#101216] p-6 md:p-8 animated-highlight-section">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               <Layers size={18} className="text-[#4b83ee]" />
-              <h2 className="text-base font-semibold text-[#f4f4f2]">
+              <h2 className="text-lg font-bold text-white">
                 Supabase SQL Table Schema
               </h2>
             </div>
             <p className="mt-1 text-xs text-[#8e949d]">
-              Copy and paste this script into your Supabase SQL Editor and click <strong>Run</strong>.
+              Copy and paste this script into your Supabase SQL Editor and click{" "}
+              <strong className="text-white">Run</strong>.
             </p>
           </div>
 
           <button
             onClick={handleCopy}
-            className="flex items-center gap-2 rounded-lg bg-[#4b83ee] px-4 py-2 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-[#3d6fd4]"
+            className="flex items-center gap-2 rounded-full bg-[#4b83ee] px-6 py-2.5 text-xs font-semibold text-white transition hover:bg-[#3b73de] shadow-blue"
           >
-            {copied ? <Check size={14} className="text-white" /> : <Copy size={14} />}
+            {copied ? (
+              <Check size={14} className="text-white" />
+            ) : (
+              <Copy size={14} />
+            )}
             <span>{copied ? "Copied SQL!" : "Copy SQL Script"}</span>
           </button>
         </div>
 
-        <div className="relative mt-5">
-          <pre className="overflow-x-auto rounded-lg border border-white/[.08] bg-[#08090b] p-4 text-xs font-mono leading-6 text-[#8e949d]">
+        <div className="mt-6 overflow-hidden rounded-xl border border-white/10 bg-[#151525] shadow-2xl">
+          <div className="flex items-center justify-between border-b border-white/10 px-4 py-2.5">
+            <div className="flex items-center gap-2">
+              <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
+              <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
+              <span className="h-3 w-3 rounded-full bg-[#28c840]" />
+            </div>
+            <span className="text-[11px] font-mono text-[#8e949d]">
+              supabase_schema.sql
+            </span>
+          </div>
+          <pre className="overflow-x-auto bg-[#0b0d14] p-5 text-xs font-mono leading-6 text-[#d4d7dd]">
             {SQL_SCHEMA}
           </pre>
         </div>

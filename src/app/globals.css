@@ -480,3 +480,187 @@ a.bg-white, button.bg-white {
 a.bg-\[\#4b83ee\], button.bg-\[\#4b83ee\] {
   color: #ffffff !important;
 }
+
+/* ── J&T-Inspired Premium Theme & Animation Utilities (Creovates Blue) ── */
+
+@keyframes shine-flow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.text-shine-blue {
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(
+    135deg,
+    #2563eb 0%,
+    #4b83ee 25%,
+    #b4d4ff 50%,
+    #4b83ee 75%,
+    #1d4ed8 100%
+  );
+  background-size: 200% auto;
+  animation: shine-flow 6s linear infinite;
+}
+
+.shadow-blue {
+  box-shadow: 0 0 32px -5px rgba(75, 131, 238, 0.45);
+}
+
+.shadow-card {
+  box-shadow: 0 8px 30px -6px rgba(0, 0, 0, 0.55);
+}
+
+/* Mouse-tracking radial spotlight card */
+.spotlight-card {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(
+    420px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(75, 131, 238, 0.18),
+    transparent 45%
+  );
+  z-index: 1;
+}
+.spotlight-card:hover::before {
+  opacity: 1;
+}
+.spotlight-card > :not(.absolute) {
+  position: relative;
+  z-index: 2;
+}
+
+/* Conic orbiting border highlight (J&T signature effect in Creovates Blue) */
+@property --highlight-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes highlight-orbit {
+  to {
+    --highlight-angle: 360deg;
+  }
+}
+
+.animated-highlight {
+  position: relative;
+  isolation: isolate;
+}
+.animated-highlight::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  padding: 1.5px;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--highlight-angle, 0deg),
+    transparent 0deg,
+    rgba(75, 131, 238, 0.05) 30deg,
+    rgba(75, 131, 238, 0.65) 62deg,
+    rgba(165, 205, 255, 1) 75deg,
+    rgba(200, 225, 255, 1) 82deg,
+    rgba(75, 131, 238, 0.65) 95deg,
+    rgba(75, 131, 238, 0.05) 130deg,
+    transparent 180deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: highlight-orbit 4.5s linear infinite;
+  filter: drop-shadow(0 0 6px rgba(75, 131, 238, 0.65)) drop-shadow(0 0 14px rgba(75, 131, 238, 0.32));
+  z-index: 3;
+}
+.animated-highlight::after {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--highlight-angle, 0deg),
+    transparent 0deg,
+    transparent 60deg,
+    rgba(75, 131, 238, 0.45) 80deg,
+    transparent 110deg,
+    transparent 360deg
+  );
+  filter: blur(22px);
+  opacity: 0.7;
+  z-index: -1;
+}
+
+.animated-highlight-section {
+  position: relative;
+  isolation: isolate;
+}
+.animated-highlight-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--highlight-angle, 0deg),
+    transparent 0deg,
+    rgba(75, 131, 238, 0.05) 30deg,
+    rgba(75, 131, 238, 0.55) 62deg,
+    rgba(165, 205, 255, 1) 76deg,
+    rgba(200, 225, 255, 1) 82deg,
+    rgba(75, 131, 238, 0.55) 96deg,
+    rgba(75, 131, 238, 0.05) 130deg,
+    transparent 180deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: highlight-orbit 9s linear infinite;
+  filter: drop-shadow(0 0 8px rgba(75, 131, 238, 0.6)) drop-shadow(0 0 18px rgba(75, 131, 238, 0.35));
+  z-index: 3;
+}
+
+/* Drifting ambient background blobs */
+@keyframes blob-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(8vw, -6vh) scale(1.1); }
+  66% { transform: translate(-6vw, 8vh) scale(0.95); }
+}
+@keyframes blob-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-10vw, 5vh) scale(0.9); }
+  66% { transform: translate(7vw, -7vh) scale(1.15); }
+}
+@keyframes blob-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(5vw, 5vh) scale(1.2); }
+}
+
+.animate-blob-1 { animation: blob-drift-1 28s ease-in-out infinite; }
+.animate-blob-2 { animation: blob-drift-2 34s ease-in-out infinite; }
+.animate-blob-3 { animation: blob-drift-3 24s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-highlight::before,
+  .animated-highlight-section::before,
+  .text-shine-blue,
+  .animate-blob-1,
+  .animate-blob-2,
+  .animate-blob-3 {
+    animation: none !important;
+  }
+}
+

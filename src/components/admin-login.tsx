@@ -40,14 +40,14 @@ export function AdminLogin() {
   }
 
   return (
-    <div className="mt-8 rounded-xl border border-white/[.08] bg-[#0d0f12] p-7 shadow-2xl">
+    <div className="mt-7 rounded-2xl border border-white/10 bg-[#101216] p-7 shadow-2xl animated-highlight-section">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-[11px] font-bold uppercase tracking-[.14em] text-[#8e949d]">
+          <label className="block text-xs font-mono uppercase tracking-wider text-[#b0b5be]">
             Admin Access Key / Password
           </label>
           <div className="relative mt-2.5">
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-[#8e949d]">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-[#4b83ee]">
               <Lock size={16} />
             </div>
             <input
@@ -55,25 +55,29 @@ export function AdminLogin() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              placeholder="Enter admin password from .env.local"
-              className="block w-full rounded-lg border border-white/[.12] bg-[#08090b] py-3.5 pl-10 pr-11 text-sm text-[#f4f4f2] placeholder-[#8e949d]/40 outline-none transition focus:border-[#4b83ee] focus:ring-1 focus:ring-[#4b83ee]"
+              placeholder="Enter admin password"
+              className="block w-full rounded-xl border border-white/15 bg-[#08090b] py-3.5 pl-11 pr-11 text-sm text-white placeholder-[#8e949d]/50 outline-none transition focus:border-[#4b83ee] focus:ring-1 focus:ring-[#4b83ee]"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-0 flex items-center pr-3.5 text-[#8e949d] transition-colors hover:text-[#f4f4f2]"
+              className="absolute inset-y-0 right-0 flex items-center pr-4 text-[#8e949d] transition-colors hover:text-white"
               aria-label="Toggle password visibility"
             >
               {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
           </div>
-          <p className="mt-2 text-[11px] text-[#8e949d]/60">
-            Default set in <code className="rounded bg-white/[.06] px-1 py-0.5 text-[#f4f4f2]">.env.local</code> as <code className="text-[#4b83ee]">ADMIN_PASSWORD</code>
+          <p className="mt-2.5 text-[11px] text-[#8e949d]">
+            Configured in{" "}
+            <code className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-white">
+              .env.local
+            </code>{" "}
+            as <code className="font-mono text-[#4b83ee]">ADMIN_PASSWORD</code>
           </p>
         </div>
 
         {error && (
-          <div className="flex items-center gap-2 rounded-lg border border-[#e05252]/20 bg-[#e05252]/10 p-3 text-xs text-[#e05252]">
+          <div className="flex items-center gap-2 rounded-xl border border-[#e05252]/30 bg-[#e05252]/10 p-3.5 text-xs text-[#e05252]">
             <ShieldAlert size={16} className="shrink-0" />
             <span>{error}</span>
           </div>
@@ -82,11 +86,11 @@ export function AdminLogin() {
         <button
           type="submit"
           disabled={loading}
-          className="group flex w-full items-center justify-center gap-2 rounded-lg bg-[#4b83ee] py-3.5 text-xs font-bold uppercase tracking-[.14em] text-white transition-all hover:bg-[#3d6fd4] hover:shadow-lg disabled:opacity-50"
+          className="group flex w-full items-center justify-center gap-2 rounded-full bg-[#4b83ee] py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#3b73de] shadow-blue disabled:opacity-50"
         >
           <span>{loading ? "Authenticating..." : "Unlock Studio Admin"}</span>
           <ArrowRight
-            size={14}
+            size={16}
             className="transition-transform group-hover:translate-x-1"
           />
         </button>

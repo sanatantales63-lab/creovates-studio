@@ -12,8 +12,9 @@ import {
   ArrowRight,
   ExternalLink,
   Laptop,
-  CheckCircle2,
-  AlertTriangle,
+  Zap,
+  Inbox,
+  Sparkles,
 } from "lucide-react";
 import { Project } from "@/types/project";
 
@@ -57,21 +58,35 @@ export default async function AdminDashboardPage() {
   return (
     <div className="space-y-10 pb-16">
       {/* Top Welcome Header */}
-      <div className="flex flex-col justify-between gap-4 border-b border-white/[.08] pb-6 sm:flex-row sm:items-end">
+      <div className="flex flex-col justify-between gap-5 border-b border-white/10 pb-7 sm:flex-row sm:items-end">
         <div>
-          <p className="eyebrow">Studio Management Area</p>
-          <h1 className="mt-2 text-3xl font-medium tracking-[-.05em] text-[#f4f4f2] md:text-5xl">
-            STUDIO <span className="text-[#8e949d]">OVERVIEW.</span>
+          <span className="inline-flex items-center gap-1.5 border border-[#4b83ee]/40 bg-[#4b83ee]/10 text-[#4b83ee] rounded-full px-4 py-1 text-xs font-medium mb-3">
+            <Sparkles size={12} />
+            Studio Management Area
+          </span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+            Studio{" "}
+            <span className="text-shine-blue italic font-serif font-normal">
+              overview
+            </span>
           </h1>
-          <p className="mt-1 text-xs text-[#8e949d]">
-            Manage portfolio showcases, dual-screen presentations, and cloud assets.
+          <p className="mt-2 text-xs sm:text-sm text-[#8e949d]">
+            Manage portfolio showcases, dual-screen presentations, client leads,
+            and cloud assets.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            href="/admin/import"
+            className="flex items-center gap-2 rounded-full border border-[#4b83ee]/40 bg-[#4b83ee]/10 px-5 py-2.5 text-xs font-semibold text-[#4b83ee] transition hover:bg-[#4b83ee]/20"
+          >
+            <Zap size={14} />
+            <span>URL Auto-Import</span>
+          </Link>
           <Link
             href="/admin/projects/new"
-            className="flex items-center gap-2 rounded-lg bg-[#4b83ee] px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-[#3d6fd4]"
+            className="flex items-center gap-2 rounded-full bg-[#4b83ee] px-6 py-2.5 text-xs font-semibold text-white transition hover:bg-[#3b73de] shadow-blue"
           >
             <Plus size={15} />
             <span>Add Project</span>
@@ -79,7 +94,7 @@ export default async function AdminDashboardPage() {
           <Link
             href="/"
             target="_blank"
-            className="flex items-center gap-1.5 rounded-lg border border-white/[.1] px-4 py-2.5 text-xs font-semibold text-[#8e949d] hover:bg-white/[.04] hover:text-[#f4f4f2]"
+            className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-xs font-medium text-[#b0b5be] hover:border-white/40 hover:text-white transition-all"
           >
             <span>Live Site</span>
             <ExternalLink size={13} />
@@ -89,96 +104,174 @@ export default async function AdminDashboardPage() {
 
       {/* Table Missing Alert Banner */}
       {tableMissing && (
-        <div className="flex flex-col items-start justify-between gap-4 rounded-xl border border-[#4b83ee]/30 bg-[#4b83ee]/10 p-5 sm:flex-row sm:items-center">
-          <div className="flex items-center gap-3">
-            <Database size={22} className="text-[#4b83ee]" />
+        <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-[#4b83ee]/40 bg-[#4b83ee]/10 p-6 sm:flex-row sm:items-center animated-highlight-section">
+          <div className="flex items-center gap-3.5">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#4b83ee]/20 text-[#4b83ee]">
+              <Database size={22} />
+            </div>
             <div>
-              <p className="text-sm font-semibold text-[#f4f4f2]">
+              <p className="text-sm font-semibold text-white">
                 Database table `projects` not initialized yet
               </p>
-              <p className="text-xs text-[#8e949d]">
-                Run the supplied SQL schema once in your Supabase SQL Editor to unlock the database archive.
+              <p className="text-xs text-[#b0b5be] mt-0.5">
+                Run the supplied SQL schema once in your Supabase SQL Editor to
+                unlock the database archive.
               </p>
             </div>
           </div>
           <Link
             href="/admin/setup"
-            className="rounded-lg bg-[#4b83ee] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#3d6fd4]"
+            className="rounded-full bg-[#4b83ee] px-5 py-2.5 text-xs font-semibold text-white transition hover:bg-[#3b73de] shadow-blue shrink-0"
           >
             Copy SQL Script →
           </Link>
         </div>
       )}
 
-      {/* Metric Cards */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* 4-Column Animated Highlight Metric Cards */}
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {/* Total Projects */}
-        <div className="rounded-xl border border-white/[.08] bg-[#0d0f12] p-5">
+        <div className="rounded-2xl border border-white/10 bg-[#101216] p-6 animated-highlight-section">
           <div className="flex items-center justify-between text-[#8e949d]">
-            <span className="text-[11px] font-bold uppercase tracking-wider">
+            <span className="text-xs font-mono uppercase tracking-wider">
               Total Projects
             </span>
-            <FolderGit2 size={16} className="text-[#4b83ee]" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#4b83ee]/15 text-[#4b83ee]">
+              <FolderGit2 size={16} />
+            </span>
           </div>
-          <p className="mt-3 text-3xl font-semibold text-[#f4f4f2]">{total}</p>
-          <p className="mt-1 text-[11px] text-[#8e949d]">Archived in Supabase</p>
+          <p className="mt-4 text-4xl font-bold text-white">{total}</p>
+          <p className="mt-1.5 text-xs text-[#8e949d]">Archived in Supabase</p>
         </div>
 
         {/* Live Published */}
-        <div className="rounded-xl border border-white/[.08] bg-[#0d0f12] p-5">
+        <div className="rounded-2xl border border-white/10 bg-[#101216] p-6 animated-highlight-section">
           <div className="flex items-center justify-between text-[#8e949d]">
-            <span className="text-[11px] font-bold uppercase tracking-wider">
+            <span className="text-xs font-mono uppercase tracking-wider">
               Live Published
             </span>
-            <Eye size={16} className="text-[#34d399]" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-400">
+              <Eye size={16} />
+            </span>
           </div>
-          <p className="mt-3 text-3xl font-semibold text-[#f4f4f2]">
-            {publishedCount}
-          </p>
-          <p className="mt-1 text-[11px] text-[#8e949d]">Active on portfolio</p>
+          <p className="mt-4 text-4xl font-bold text-white">{publishedCount}</p>
+          <p className="mt-1.5 text-xs text-[#8e949d]">Active on portfolio</p>
         </div>
 
         {/* Featured Showcases */}
-        <div className="rounded-xl border border-white/[.08] bg-[#0d0f12] p-5">
+        <div className="rounded-2xl border border-white/10 bg-[#101216] p-6 animated-highlight-section">
           <div className="flex items-center justify-between text-[#8e949d]">
-            <span className="text-[11px] font-bold uppercase tracking-wider">
+            <span className="text-xs font-mono uppercase tracking-wider">
               Featured Hero
             </span>
-            <Star size={16} className="text-[#f59e0b]" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-500/15 text-amber-400">
+              <Star size={16} />
+            </span>
           </div>
-          <p className="mt-3 text-3xl font-semibold text-[#f4f4f2]">
-            {featuredCount}
+          <p className="mt-4 text-4xl font-bold text-white">{featuredCount}</p>
+          <p className="mt-1.5 text-xs text-[#8e949d]">
+            Primary homepage showcases
           </p>
-          <p className="mt-1 text-[11px] text-[#8e949d]">Primary showcase projects</p>
         </div>
 
         {/* Storage Pipeline */}
-        <div className="rounded-xl border border-white/[.08] bg-[#0d0f12] p-5">
+        <div className="rounded-2xl border border-white/10 bg-[#101216] p-6 animated-highlight-section">
           <div className="flex items-center justify-between text-[#8e949d]">
-            <span className="text-[11px] font-bold uppercase tracking-wider">
+            <span className="text-xs font-mono uppercase tracking-wider">
               Media Cloud
             </span>
-            <Cloud size={16} className="text-[#4b83ee]" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#4b83ee]/15 text-[#4b83ee]">
+              <Cloud size={16} />
+            </span>
           </div>
-          <p className="mt-3 text-sm font-semibold text-[#f4f4f2]">Cloudinary</p>
-          <p className="mt-1 text-[11px] text-[#34d399]">⚡ Auto-Compressor Active</p>
+          <p className="mt-4 text-xl font-bold text-white">Cloudinary CDN</p>
+          <p className="mt-2 text-xs text-emerald-400 font-medium">
+            ⚡ Auto-Compressor Active
+          </p>
         </div>
       </div>
 
+      {/* Quick Actions Bento Strip */}
+      <div className="grid gap-5 md:grid-cols-3">
+        <Link
+          href="/admin/import"
+          className="group rounded-2xl border border-white/10 bg-[#101216] p-6 hover:border-[#4b83ee]/50 transition-all duration-300 hover:-translate-y-0.5 animated-highlight"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#4b83ee]/15 border border-[#4b83ee]/30 text-[#4b83ee]">
+              <Zap size={18} />
+            </span>
+            <ArrowRight
+              size={15}
+              className="text-[#8e949d] group-hover:text-[#4b83ee] group-hover:translate-x-1 transition-all"
+            />
+          </div>
+          <h3 className="text-base font-bold text-white group-hover:text-[#4b83ee] transition-colors">
+            One-Click URL Importer
+          </h3>
+          <p className="mt-1 text-xs text-[#8e949d] leading-relaxed">
+            Paste any live website URL to automatically capture 16:9 laptop &amp;
+            9:16 mobile screenshots.
+          </p>
+        </Link>
+
+        <Link
+          href="/admin/leads"
+          className="group rounded-2xl border border-white/10 bg-[#101216] p-6 hover:border-[#4b83ee]/50 transition-all duration-300 hover:-translate-y-0.5 animated-highlight"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#4b83ee]/15 border border-[#4b83ee]/30 text-[#4b83ee]">
+              <Inbox size={18} />
+            </span>
+            <ArrowRight
+              size={15}
+              className="text-[#8e949d] group-hover:text-[#4b83ee] group-hover:translate-x-1 transition-all"
+            />
+          </div>
+          <h3 className="text-base font-bold text-white group-hover:text-[#4b83ee] transition-colors">
+            Client Enquiries &amp; Leads
+          </h3>
+          <p className="mt-1 text-xs text-[#8e949d] leading-relaxed">
+            Review incoming project briefs, update lead statuses, and reply
+            directly via WhatsApp or Email.
+          </p>
+        </Link>
+
+        <Link
+          href="/admin/setup"
+          className="group rounded-2xl border border-white/10 bg-[#101216] p-6 hover:border-[#4b83ee]/50 transition-all duration-300 hover:-translate-y-0.5 animated-highlight"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#4b83ee]/15 border border-[#4b83ee]/30 text-[#4b83ee]">
+              <Database size={18} />
+            </span>
+            <ArrowRight
+              size={15}
+              className="text-[#8e949d] group-hover:text-[#4b83ee] group-hover:translate-x-1 transition-all"
+            />
+          </div>
+          <h3 className="text-base font-bold text-white group-hover:text-[#4b83ee] transition-colors">
+            Database &amp; Cloud Setup
+          </h3>
+          <p className="mt-1 text-xs text-[#8e949d] leading-relaxed">
+            Inspect your Supabase table connection, SQL schema script, and
+            Cloudinary upload preset.
+          </p>
+        </Link>
+      </div>
+
       {/* Recent Projects Section */}
-      <div className="rounded-xl border border-white/[.08] bg-[#0d0f12] p-6">
-        <div className="flex items-center justify-between border-b border-white/[.08] pb-4">
+      <div className="rounded-2xl border border-white/10 bg-[#101216] p-6 md:p-8 animated-highlight-section">
+        <div className="flex items-center justify-between border-b border-white/10 pb-5">
           <div>
-            <h2 className="text-base font-semibold text-[#f4f4f2]">
-              Recent Projects
-            </h2>
-            <p className="text-xs text-[#8e949d]">
+            <h2 className="text-lg font-bold text-white">Recent Projects</h2>
+            <p className="text-xs text-[#8e949d] mt-0.5">
               Latest additions to your studio showcase.
             </p>
           </div>
           <Link
             href="/admin/projects"
-            className="flex items-center gap-1 text-xs font-semibold text-[#4b83ee] hover:underline"
+            className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-white hover:border-[#4b83ee] hover:text-[#4b83ee] transition-all"
           >
             <span>View All ({total})</span>
             <ArrowRight size={13} />
@@ -186,24 +279,39 @@ export default async function AdminDashboardPage() {
         </div>
 
         {projects.length === 0 ? (
-          <div className="py-12 text-center text-xs text-[#8e949d]">
-            <p>No projects published yet.</p>
-            <Link
-              href="/admin/projects/new"
-              className="mt-3 inline-block rounded-lg bg-white/[.08] px-4 py-2 text-xs font-bold text-[#f4f4f2] hover:bg-white/[.15]"
-            >
-              Add Your First Project ↗
-            </Link>
+          <div className="py-14 text-center text-xs text-[#8e949d]">
+            <p className="text-sm text-white font-medium">
+              No projects published in Supabase yet
+            </p>
+            <p className="mt-1 text-xs text-[#8e949d]">
+              Add a custom project or import one with a single URL click.
+            </p>
+            <div className="mt-5 flex items-center justify-center gap-3">
+              <Link
+                href="/admin/projects/new"
+                className="inline-flex items-center gap-2 rounded-full bg-[#4b83ee] px-5 py-2.5 text-xs font-semibold text-white hover:bg-[#3b73de] shadow-blue"
+              >
+                <Plus size={14} />
+                Add Your First Project
+              </Link>
+              <Link
+                href="/admin/import"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-xs font-medium text-white hover:border-[#4b83ee]"
+              >
+                <Zap size={14} className="text-[#4b83ee]" />
+                Import from URL
+              </Link>
+            </div>
           </div>
         ) : (
-          <div className="divide-y divide-white/[.06]">
-            {projects.slice(0, 5).map((p) => (
+          <div className="divide-y divide-white/10 mt-2">
+            {projects.slice(0, 6).map((p) => (
               <div
                 key={p.id}
-                className="flex items-center justify-between py-4 transition hover:bg-white/[.02]"
+                className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4 transition hover:bg-white/[0.02] rounded-xl px-2"
               >
-                <div className="flex items-center gap-3">
-                  <div className="relative h-11 w-18 shrink-0 overflow-hidden rounded border border-white/[.1] bg-[#08090b]">
+                <div className="flex items-center gap-4">
+                  <div className="relative h-12 w-20 shrink-0 overflow-hidden rounded-lg border border-white/10 bg-[#08090b]">
                     {p.cover_image ? (
                       <Image
                         src={p.cover_image}
@@ -213,16 +321,14 @@ export default async function AdminDashboardPage() {
                         unoptimized
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center text-[#8e949d]/30">
-                        <Laptop size={14} />
+                      <div className="flex h-full w-full items-center justify-center text-[#8e949d]/40">
+                        <Laptop size={15} />
                       </div>
                     )}
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-[#f4f4f2]">
-                      {p.title}
-                    </p>
-                    <p className="text-[11px] text-[#8e949d]">
+                    <p className="text-sm font-bold text-white">{p.title}</p>
+                    <p className="text-xs text-[#8e949d] mt-0.5">
                       {p.category} {p.year ? `· ${p.year}` : ""}
                     </p>
                   </div>
@@ -230,17 +336,24 @@ export default async function AdminDashboardPage() {
 
                 <div className="flex items-center gap-3">
                   <span
-                    className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${
+                    className={`rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wider ${
                       p.published
-                        ? "bg-[#34d399]/15 text-[#34d399]"
-                        : "bg-white/[.08] text-[#8e949d]"
+                        ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
+                        : "bg-white/10 text-[#8e949d] border border-white/10"
                     }`}
                   >
                     {p.published ? "Live" : "Draft"}
                   </span>
                   <Link
+                    href={`/work/${p.slug}`}
+                    target="_blank"
+                    className="rounded-full border border-white/15 px-3.5 py-1.5 text-xs font-medium text-[#b0b5be] hover:border-[#4b83ee] hover:text-white transition-all"
+                  >
+                    Preview
+                  </Link>
+                  <Link
                     href={`/admin/projects/${p.id}`}
-                    className="text-xs font-semibold text-[#4b83ee] hover:underline"
+                    className="rounded-full bg-[#4b83ee]/15 border border-[#4b83ee]/40 px-4 py-1.5 text-xs font-semibold text-[#4b83ee] hover:bg-[#4b83ee] hover:text-white transition-all"
                   >
                     Edit
                   </Link>
